@@ -1,5 +1,5 @@
 /* ============================================
-   💪 小可爱的运动计划 — Application Logic
+   💪 璁璁老婆的运动计划 — Application Logic
    ============================================ */
 
 // ===== CONSTANTS =====
@@ -611,5 +611,5 @@ document.addEventListener('keydown', (e) => {
   appData = loadData();
   selectedDay = DAY_KEYS[getTodayDayIndex()];
   renderAll();
-  console.log('💪 小可爱的运动计划 已就绪！');
+  console.log('💪 璁璁老婆的运动计划 已就绪！');
 })();
