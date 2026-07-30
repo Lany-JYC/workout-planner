@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#e85d75">
+<meta name="description" content="小可爱的运动计划 — 专属训练计划清单，包含动作详解、视频教学和每日打卡">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="运动计划">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💪</text></svg>">
+<title>💪 小可爱的运动计划</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-content">
+    <h1>💪 小可爱的运动计划</h1>
+    <p class="subtitle" id="headerDate">2026年7月 · 第5周</p>
+  </div>
+</header>
+
+<!-- ===== NAVIGATION TABS ===== -->
+<nav class="tabs">
+  <button class="tab active" onclick="switchTab('plan')">
+    <span class="icon">📋</span> 训练计划
+  </button>
+  <button class="tab" onclick="switchTab('progress')">
+    <span class="icon">📊</span> 打卡记录
+  </button>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main">
+
+  <!-- TAB: 训练计划 -->
+  <section id="tab-plan">
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num" id="stat-streak">0</div>
+        <div class="label">🔥 连续打卡</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-week">0/7</div>
+        <div class="label">📅 本周完成</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-total">0</div>
+        <div class="label">⭐ 总打卡数</div>
+      </div>
+    </div>
+
+    <!-- Week Selector -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div class="section-title" style="margin:0;">📅 本周计划</div>
+      <button class="btn btn-outline btn-sm" onclick="resetWeek()">🔄 重置本周</button>
+    </div>
+
+    <!-- Day Chips -->
+    <div class="week-grid" id="weekGrid"></div>
+
+    <!-- Selected Day Panel -->
+    <div class="selected-day-panel" id="dayPanel">
+      <div class="selected-day-header">
+        <h3 id="dayPanelTitle">星期一 · 训练计划</h3>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary btn-sm" onclick="openAddModal()">+ 添加动作</button>
+          <button class="btn btn-success btn-sm" id="btnCheckin" onclick="checkinDay()">✅ 打卡</button>
+        </div>
+      </div>
+      <div class="exercise-list" id="exerciseList"></div>
+    </div>
+  </section>
+
+  <!-- TAB: 打卡记录 -->
+  <section id="tab-progress" style="display:none;">
+    <div class="section-title">📊 本月进展</div>
+    <div style="background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+        <span style="font-weight:700;">本月完成率</span>
+        <span style="font-weight:700;color:var(--primary);font-size:1.1rem;" id="monthRate">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="monthProgress" style="width:0%;"></div>
+      </div>
+      <div style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;" id="monthDetail">已完成 0 天 / 共 31 天</div>
+    </div>
+
+    <div class="section-title">📝 打卡历史</div>
+    <div id="historyList">
+      <div class="empty-state">
+        <span class="emoji">🏃‍♀️</span>
+        <p>还没有打卡记录</p>
+        <p style="font-size:0.8rem;color:var(--text-muted);">开始你的第一次训练吧！</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <p>Made with <span class="heart">❤️</span> for 小可爱</p>
+</footer>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" style="display:none;" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3 id="modalTitle">添加运动动作</h3>
+
+    <div class="form-group">
+      <label>🏷️ 动作名称</label>
+      <input type="text" id="exName" placeholder="例如：深蹲、平板支撑…" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label>📂 动作类型</label>
+      <select id="exType">
+        <option value="strength">🏋️ 力量训练</option>
+        <option value="cardio">🏃 有氧运动</option>
+        <option value="flexibility">🧘 柔韧拉伸</option>
+        <option value="core">🎯 核心训练</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>🔢 组数</label>
+        <input type="number" id="exSets" value="3" min="1" max="20">
+      </div>
+      <div class="form-group">
+        <label>🔄 每组次数 / 时长</label>
+        <input type="text" id="exReps" value="12次" placeholder="12次 或 30秒">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>📖 动作详细讲解</label>
+      <textarea id="exDesc" rows="4" placeholder="描述动作要领、注意事项、呼吸节奏…"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>🎬 教学视频链接</label>
+      <input type="text" id="exVideo" placeholder="粘贴 YouTube / Bilibili 视频链接…" autocomplete="off">
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">支持 YouTube 和 Bilibili（B站）的视频链接自动嵌入</div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="btn btn-primary" onclick="saveExercise()" style="flex:1;">💾 保存动作</button>
+      <button class="btn btn-outline" onclick="closeModal()" style="flex:1;">取消</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
