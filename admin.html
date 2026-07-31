@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔧 运动计划管理</title>
+<script src="data/exercises.js"></script>
+<style>
+  :root {
+    --bg: #f5f3f8;
+    --card: #ffffff;
+    --primary: #7c5cbf;
+    --primary-light: #ede4f7;
+    --accent: #e85d75;
+    --accent-light: #fce4e9;
+    --text: #2d2a3a;
+    --text-muted: #8a8695;
+    --border: #e8e5ef;
+    --success: #4caf93;
+    --success-light: #e6f7f1;
+    --radius: 12px;
+    --shadow: 0 1px 8px rgba(44,30,60,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #2d2a3a 0%, #4a3f6b 100%);
+    color: #fff;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header h1 { font-size: 1.2rem; font-weight: 700; }
+  .header .badge {
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .tab {
+    flex: 1;
+    padding: 14px 8px;
+    border: none;
+    background: transparent;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+  /* ===== MAIN ===== */
+  .main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 16px 100px;
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+  }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-primary:hover { background: #6a4db5; }
+  .btn-success { background: var(--success); color: #fff; }
+  .btn-success:hover { background: #3d9e7d; }
+  .btn-danger { background: #fff; color: #e85d75; border: 1.5px solid #fccdd5; }
+  .btn-danger:hover { background: #fff5f5; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+  .btn-sm { padding: 5px 12px; font-size: 0.73rem; }
+  .btn-lg { padding: 12px 28px; font-size: 0.95rem; border-radius: 12px; }
+  .btn-publish {
+    background: linear-gradient(135deg, #e85d75, #c94b8c);
+    color: #fff;
+    font-size: 1rem;
+    padding: 14px 36px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(232,93,117,0.35);
+  }
+  .btn-publish:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(232,93,117,0.45); }
+
+  /* ===== TABLE ===== */
+  .table-wrap {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    background: #faf9fc;
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #faf9fc; }
+  .type-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .empty-row td { text-align: center; color: var(--text-muted); padding: 32px; }
+
+  /* ===== WEEK PLAN EDITOR ===== */
+  .day-plan-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .day-plan-header {
+    padding: 14px 16px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+  .day-plan-header:hover { background: #faf9fc; }
+  .day-plan-body {
+    padding: 0 16px 16px;
+    display: none;
+  }
+  .day-plan-card.open .day-plan-body { display: block; }
+  .day-plan-card.open .day-plan-header { border-bottom: 1px solid var(--border); }
+  .ex-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+    font-size: 0.88rem;
+  }
+  .ex-check input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--primary);
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+  .modal {
+    background: var(--card);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 28px 24px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  }
+  .modal h3 { font-size: 1.1rem; margin-bottom: 20px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* ===== PREVIEW IFRAME ===== */
+  .preview-frame {
+    width: 100%;
+    height: 600px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+  }
+
+  /* ===== PUBLISH ===== */
+  .publish-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .publish-card h3 { margin-bottom: 12px; }
+  .code-block {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 16px;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.78rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 12px 0;
+  }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2d2a3a;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 200;
+    animation: fadeUp 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 500px) {
+    .tab { font-size: 0.73rem; padding: 12px 4px; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔧 运动计划管理</h1>
+  <span class="badge">Lany 专用</span>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('exercises')">📋 动作库</button>
+  <button class="tab" onclick="switchTab('plan')">📅 周计划</button>
+  <button class="tab" onclick="switchTab('preview')">👁️ 预览</button>
+  <button class="tab" onclick="switchTab('publish')">🚀 发布</button>
+</div>
+
+<div class="main">
+
+  <!-- ===== TAB: EXERCISE LIBRARY ===== -->
+  <div id="tab-exercises">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <h2 style="font-size:1.05rem;">动作库（<span id="exCount">0</span> 个动作）</h2>
+      <button class="btn btn-primary" onclick="openAddEx()">+ 添加动作</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>动作名称</th>
+            <th>类型</th>
+            <th>组数</th>
+            <th>次数/时长</th>
+            <th>视频</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="exTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB: WEEKLY PLAN ===== -->
+  <div id="tab-plan" style="display:none;">
+    <h2 style="font-size:1.05rem;margin-bottom:16px;">📅 设置每天训练动作</h2>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">
+      勾选每天要做哪些动作。更改会自动保存到本地。
+    </p>
+    <div id="weekPlanEditor"></div>
+  </div>
+
+  <!-- ===== TAB: PREVIEW ===== -->
+  <div id="tab-preview" style="display:none;">
+    <h2 style="font-size:1.05rem;margin-bottom:16px;">👁️ 老婆看到的页面预览</h2>
+    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;">
+      下面预览的是根据当前动作库和每周计划生成的视角。实际发布后老婆在手机上看到的效果。
+    </p>
+    <div id="previewContent" style="background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);"></div>
+  </div>
+
+  <!-- ===== TAB: PUBLISH ===== -->
+  <div id="tab-publish" style="display:none;">
+    <div class="publish-card">
+      <h3>🚀 发布到网站</h3>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
+        编辑完成后，按下面的步骤发布，老婆刷新手机就能看到更新。
+      </p>
+
+      <div style="margin-bottom:20px;">
+        <h4 style="margin-bottom:8px;">步骤 1：下载数据文件</h4>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">
+          点击按钮下载更新后的 <code>exercises.js</code>，保存到 <code>data/</code> 文件夹替换原文件
+        </p>
+        <button class="btn btn-primary btn-lg" onclick="downloadExercisesJs()" style="width:100%;">
+          📥 下载 exercises.js
+        </button>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <h4 style="margin-bottom:8px;">步骤 2：推送到 GitHub</h4>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">
+          在项目文件夹打开终端（或 Git Bash），运行以下命令：
+        </p>
+        <div class="code-block" id="gitCommands">cd workout-planner
+git add data/exercises.js
+git commit -m "更新训练计划"
+git push</div>
+        <button class="btn btn-outline btn-sm" onclick="copyGitCommands()">📋 复制命令</button>
+      </div>
+
+      <div style="background:var(--success-light);padding:16px;border-radius:8px;">
+        <h4 style="margin-bottom:4px;">✅ 步骤 3：告诉老婆</h4>
+        <p style="font-size:0.82rem;color:var(--text-muted);">
+          推送后等 1-2 分钟，让老婆在手机浏览器刷新<br>
+          <a href="https://lany-jyc.github.io/workout-planner/" target="_blank" style="color:var(--primary);font-weight:600;">
+            🔗 https://lany-jyc.github.io/workout-planner/
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Data preview -->
+    <div class="publish-card">
+      <h3>📄 数据预览</h3>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;">以下是即将保存的完整数据内容：</p>
+      <div class="code-block" id="dataPreview"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== ADD/EDIT EXERCISE MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" style="display:none;" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3 id="modalTitle">添加运动动作</h3>
+    <div class="form-group">
+      <label>动作名称</label>
+      <input type="text" id="exName" placeholder="例如：深蹲">
+    </div>
+    <div class="form-group">
+      <label>动作类型</label>
+      <select id="exType">
+        <option value="strength">🏋️ 力量训练</option>
+        <option value="cardio">🏃 有氧运动</option>
+        <option value="flexibility">🧘 柔韧拉伸</option>
+        <option value="core">🎯 核心训练</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>组数</label>
+        <input type="number" id="exSets" value="3" min="1" max="20">
+      </div>
+      <div class="form-group">
+        <label>每组次数 / 时长</label>
+        <input type="text" id="exReps" value="12次" placeholder="12次 或 30秒">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>动作详细讲解</label>
+      <textarea id="exDesc" placeholder="描述动作要领、注意事项、呼吸节奏等..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>教学视频链接（YouTube / Bilibili）</label>
+      <input type="text" id="exVideo" placeholder="粘贴视频链接...">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn btn-primary" onclick="saveExercise()" style="flex:1;">💾 保存动作</button>
+      <button class="btn btn-outline" onclick="closeModal()" style="flex:1;">取消</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const STORAGE_KEY = 'admin_workout_data';
+const DAY_NAMES = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+const DAY_KEYS = ['mon','tue','wed','thu','fri','sat','sun'];
+
+// Load from data/exercises.js (global variables)
+const INITIAL_LIBRARY = typeof EXERCISE_LIBRARY !== 'undefined' ? JSON.parse(JSON.stringify(EXERCISE_LIBRARY)) : {};
+const INITIAL_PLAN = typeof WEEKLY_PLAN !== 'undefined' ? JSON.parse(JSON.stringify(WEEKLY_PLAN)) : {};
+
+// Working data (saved to localStorage)
+let library = {};
+let weekPlan = {};
+let editingName = null; // track which exercise we're editing
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (data.library && data.weekPlan) {
+        library = data.library;
+        weekPlan = data.weekPlan;
+        return;
+      }
+    }
+  } catch(e) {}
+  // First time: load from exercises.js
+  library = JSON.parse(JSON.stringify(INITIAL_LIBRARY));
+  weekPlan = JSON.parse(JSON.stringify(INITIAL_PLAN));
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ library, weekPlan }));
+}
+
+// ===== EXERCISE TABLE =====
+function renderExTable() {
+  const names = Object.keys(library).sort((a, b) => a.localeCompare(b, 'zh'));
+  document.getElementById('exCount').textContent = names.length;
+
+  const typeLabels = { strength: '🏋️ 力量', cardio: '🏃 有氧', flexibility: '🧘 柔韧', core: '🎯 核心' };
+  const typeColors = { strength: '#fce4e9', cardio: '#fff3e0', flexibility: '#ede4f7', core: '#e3f2fd' };
+
+  const tbody = document.getElementById('exTableBody');
+  if (names.length === 0) {
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="6">还没有动作，点击上方按钮添加</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = names.map(name => {
+    const ex = library[name];
+    const hasVideo = ex.video && ex.video.trim();
+    return `<tr>
+      <td><strong>${escapeHtml(name)}</strong></td>
+      <td><span class="type-tag" style="background:${typeColors[ex.type] || '#f0f0f0'};">${typeLabels[ex.type] || ex.type}</span></td>
+      <td>${ex.sets} 组</td>
+      <td>${escapeHtml(ex.reps)}</td>
+      <td>${hasVideo ? '✅' : '—'}</td>
+      <td>
+        <button class="btn btn-outline btn-sm" onclick="openEditEx('${escapeAttr(name)}')">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteEx('${escapeAttr(name)}')">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== WEEK PLAN EDITOR =====
+let openDayCard = null;
+
+function renderWeekPlan() {
+  const exNames = Object.keys(library).sort((a, b) => a.localeCompare(b, 'zh'));
+  const container = document.getElementById('weekPlanEditor');
+
+  container.innerHTML = DAY_KEYS.map((key, i) => {
+    const selected = weekPlan[key] || [];
+    const count = selected.length;
+    const isOpen = key === openDayCard;
+
+    return `<div class="day-plan-card ${isOpen ? 'open' : ''}" id="day-card-${key}">
+      <div class="day-plan-header" onclick="toggleDayCard('${key}')">
+        <span>${DAY_NAMES[i]} <span style="font-weight:400;color:var(--text-muted);font-size:0.8rem;">— ${count}个动作</span></span>
+        <span style="font-size:0.8rem;color:var(--text-muted);">${isOpen ? '▲' : '▼'}</span>
+      </div>
+      <div class="day-plan-body">
+        ${exNames.length === 0
+          ? '<p style="color:var(--text-muted);font-size:0.82rem;padding:8px 0;">动作库为空，请先在「动作库」中添加动作</p>'
+          : exNames.map(name => {
+              const checked = selected.includes(name);
+              return `<label class="ex-check">
+                <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleDayEx('${key}', '${escapeAttr(name)}', this.checked)">
+                <span>${escapeHtml(name)}</span>
+              </label>`;
+            }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDayCard(key) {
+  openDayCard = openDayCard === key ? null : key;
+  renderWeekPlan();
+}
+
+function toggleDayEx(dayKey, exName, checked) {
+  if (!weekPlan[dayKey]) weekPlan[dayKey] = [];
+  if (checked) {
+    if (!weekPlan[dayKey].includes(exName)) weekPlan[dayKey].push(exName);
+  } else {
+    weekPlan[dayKey] = weekPlan[dayKey].filter(n => n !== exName);
+  }
+  saveData();
+  // Update count in header
+  const card = document.getElementById('day-card-' + dayKey);
+  if (card) {
+    const countSpan = card.querySelector('.day-plan-header span span');
+    if (countSpan) countSpan.textContent = `— ${weekPlan[dayKey].length}个动作`;
+  }
+}
+
+// ===== PREVIEW =====
+function renderPreview() {
+  const container = document.getElementById('previewContent');
+  const exNames = Object.keys(library);
+
+  if (exNames.length === 0) {
+    container.innerHTML = `<p style="text-align:center;color:var(--text-muted);padding:40px;">动作库为空，请先添加动作</p>`;
+    return;
+  }
+
+  const typeIcons = { strength: '🏋️', cardio: '🏃', flexibility: '🧘', core: '🎯' };
+  const typeColors = { strength: '#fce4e9', cardio: '#fff3e0', flexibility: '#ede4f7', core: '#e3f2fd' };
+
+  // Show each day's plan in preview
+  container.innerHTML = DAY_KEYS.map((key, i) => {
+    const exercises = (weekPlan[key] || []).filter(n => library[n]);
+    return `<div style="margin-bottom:20px;">
+      <h4 style="margin-bottom:8px;font-size:0.95rem;">${DAY_NAMES[i]} ${exercises.length === 0 ? '— 休息日 🏖️' : ''}</h4>
+      ${exercises.map(name => {
+        const ex = library[name];
+        const icon = typeIcons[ex.type] || '💪';
+        const bg = typeColors[ex.type] || '#fce4e9';
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;">
+          <div style="width:36px;height:36px;border-radius:8px;background:${bg};display:flex;align-items:center;justify-content:center;font-size:1rem;">${icon}</div>
+          <div>
+            <div style="font-weight:700;font-size:0.88rem;">${escapeHtml(name)}</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${ex.sets}组 × ${escapeHtml(ex.reps)}</div>
+          </div>
+          ${ex.video ? '<span style="margin-left:auto;font-size:0.75rem;">🎬</span>' : ''}
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+// ===== PUBLISH =====
+function generateExercisesJs() {
+  // Pretty-print the library
+  const libEntries = Object.keys(library).sort((a, b) => a.localeCompare(b, 'zh')).map(name => {
+    const ex = library[name];
+    return `  '${name}': {
+    type: '${ex.type}', sets: ${ex.sets}, reps: '${ex.reps.replace(/'/g, "\\'")}',
+    desc: '${(ex.desc || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n')}',
+    video: '${(ex.video || '').replace(/'/g, "\\'")}'
+  }`;
+  }).join(',\n');
+
+  const planEntries = DAY_KEYS.map(key => {
+    const exercises = weekPlan[key] || [];
+    const list = exercises.map(n => `'${n}'`).join(', ');
+    return `  ${key}: [${list}]`;
+  }).join(',\n');
+
+  return `/* ============================================
+   💪 璁璁老婆的运动计划 — 训练动作库
+   由管理页面自动生成于 ${new Date().toLocaleString('zh-CN')}
+   ============================================ */
+
+var EXERCISE_LIBRARY = {
+${libEntries}
+};
+
+// 每周训练计划（动作名称必须在上面的动作库中存在）
+var WEEKLY_PLAN = {
+${planEntries}
+};
+`;
+}
+
+function downloadExercisesJs() {
+  const content = generateExercisesJs();
+  const blob = new Blob([content], { type: 'application/javascript;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'exercises.js';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✅ exercises.js 下载中，保存到 data/ 文件夹');
+}
+
+function copyGitCommands() {
+  const text = document.getElementById('gitCommands').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('📋 命令已复制到剪贴板');
+  }).catch(() => {
+    showToast('⚠️ 复制失败，请手动选择文字复制');
+  });
+}
+
+function updateDataPreview() {
+  const preview = document.getElementById('dataPreview');
+  if (preview) {
+    preview.textContent = generateExercisesJs();
+  }
+}
+
+// ===== MODAL =====
+function openAddEx() {
+  editingName = null;
+  document.getElementById('modalTitle').textContent = '添加运动动作';
+  document.getElementById('exName').value = '';
+  document.getElementById('exType').value = 'strength';
+  document.getElementById('exSets').value = 3;
+  document.getElementById('exReps').value = '12次';
+  document.getElementById('exDesc').value = '';
+  document.getElementById('exVideo').value = '';
+  document.getElementById('modalOverlay').style.display = 'flex';
+  document.getElementById('exName').focus();
+}
+
+function openEditEx(name) {
+  const ex = library[name];
+  if (!ex) return;
+  editingName = name;
+  document.getElementById('modalTitle').textContent = '编辑运动动作';
+  document.getElementById('exName').value = name;
+  document.getElementById('exType').value = ex.type || 'strength';
+  document.getElementById('exSets').value = ex.sets;
+  document.getElementById('exReps').value = ex.reps;
+  document.getElementById('exDesc').value = ex.desc || '';
+  document.getElementById('exVideo').value = ex.video || '';
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function saveExercise() {
+  const name = document.getElementById('exName').value.trim();
+  if (!name) { alert('请输入动作名称'); return; }
+
+  const newEx = {
+    type: document.getElementById('exType').value,
+    sets: parseInt(document.getElementById('exSets').value) || 3,
+    reps: document.getElementById('exReps').value.trim() || '12次',
+    desc: document.getElementById('exDesc').value.trim(),
+    video: document.getElementById('exVideo').value.trim(),
+  };
+
+  // If renaming, remove old key and update weekPlan references
+  if (editingName && editingName !== name) {
+    delete library[editingName];
+    // Update week plan references
+    DAY_KEYS.forEach(key => {
+      if (weekPlan[key]) {
+        weekPlan[key] = weekPlan[key].map(n => n === editingName ? name : n);
+      }
+    });
+  }
+
+  library[name] = newEx;
+  saveData();
+  closeModal();
+  renderAll();
+}
+
+function deleteEx(name) {
+  if (!confirm(`确定要删除「${name}」吗？\n\n这会同时从周计划中移除该动作。`)) return;
+  delete library[name];
+  // Remove from week plan
+  DAY_KEYS.forEach(key => {
+    if (weekPlan[key]) {
+      weekPlan[key] = weekPlan[key].filter(n => n !== name);
+    }
+  });
+  saveData();
+  renderAll();
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').style.display = 'none';
+  editingName = null;
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const tabs = document.querySelectorAll('.tab');
+  const tabNames = { exercises: '动作库', plan: '周计划', preview: '预览', publish: '发布' };
+  tabs.forEach(t => {
+    if (t.textContent.includes(tabNames[tab])) t.classList.add('active');
+  });
+
+  ['exercises', 'plan', 'preview', 'publish'].forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+  });
+
+  if (tab === 'plan') renderWeekPlan();
+  if (tab === 'preview') renderPreview();
+  if (tab === 'publish') updateDataPreview();
+}
+
+// ===== HELPERS =====
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function escapeAttr(str) {
+  return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;');
+}
+
+function showToast(msg) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('modalOverlay');
+    if (overlay.style.display === 'flex') {
+      overlay.style.display = 'none';
+      editingName = null;
+    }
+  }
+});
+
+// ===== RENDER ALL =====
+function renderAll() {
+  renderExTable();
+  // If week plan tab is visible, render it
+  const planTab = document.getElementById('tab-plan');
+  if (planTab && planTab.style.display !== 'none') renderWeekPlan();
+}
+
+// ===== INIT =====
+loadData();
+renderExTable();
+</script>
+</body>
+</html>

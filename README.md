@@ -1,47 +1,47 @@
 # 💪 璁璁老婆的运动计划
 
-一个专为女朋友打造的运动训练计划清单 Web 应用。
+一个专属的运动训练计划 Web 应用，老婆用来看计划和打卡，Lany 用管理页面编辑内容。
 
-## ✨ 功能
+🔗 **网站地址**：https://lany-jyc.github.io/workout-planner/
 
-- **📋 训练计划** — 按周安排每日训练，自由添加/编辑/删除运动动作
-- **🎬 视频嵌入** — 支持 YouTube 和 Bilibili 视频自动嵌入播放
-- **📖 动作详解** — 每个动作包含要领、注意事项和呼吸节奏的详细讲解
-- **✅ 每日打卡** — 完成训练后一键打卡，追踪连续天数
-- **📊 进度统计** — 本周完成率、连续打卡天数、总打卡数、月度进展
+## 👩‍🦰 老婆怎么用
 
-## 🚀 使用方式
+1. 手机浏览器打开上面的网址
+2. 查看每天的训练计划，展开动作看详解和视频
+3. 完成训练后点「打卡」
+4. 看打卡记录追踪进度
 
-### 直接打开（最简单）
-1. 下载项目文件夹
-2. 用任意浏览器打开 `index.html`
+> 打卡数据存在自己手机浏览器里，不会丢。
 
-### 本地预览服务器
-```bash
-# Python
-python -m http.server 8080
+## 👨‍💻 Lany 怎么编辑
 
-# Node.js (需要先安装 http-server)
-npx http-server -p 8080
-```
-
-### 部署到 GitHub Pages
-1. 在 GitHub 创建新仓库
-2. 推送代码到仓库
-3. 在仓库 Settings → Pages 中启用 GitHub Pages，选择 `main` 分支
+1. 双击打开 `admin.html`
+2. 在「动作库」添加/编辑/删除动作和视频
+3. 在「周计划」设置每天做什么
+4. 点「🚀 发布」→ 下载 `exercises.js`
+5. 把下载的文件放到 `data/` 文件夹替换原文件
+6. 终端运行：
+   ```bash
+   cd workout-planner
+   git add data/exercises.js
+   git commit -m "更新训练计划"
+   git push
+   ```
+7. 告诉老婆刷新页面
 
 ## 📁 项目结构
 
 ```
 workout-planner/
-├── index.html        # 主页面
-├── css/
-│   └── style.css     # 样式
-├── js/
-│   └── app.js        # 应用逻辑
+├── index.html            # 老婆页面（只读 + 打卡）
+├── admin.html            # Lany 管理页面（编辑 + 发布）
+├── data/
+│   └── exercises.js      # 动作库 + 周计划数据
 └── README.md
 ```
 
 ## 💾 数据存储
 
-所有数据保存在浏览器的 `localStorage` 中，不会丢失。
+- 训练计划数据：`data/exercises.js`（Git 版本控制）
+- 打卡记录：浏览器 localStorage（老婆个人数据，不上传）
+- 管理页面编辑：浏览器 localStorage（Lany 本地，编辑缓冲）
