@@ -351,42 +351,70 @@
 
   <!-- ===== TAB: PUBLISH ===== -->
   <div id="tab-publish" style="display:none;">
-    <div class="publish-card">
-      <h3>🚀 发布到网站</h3>
-      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
-        编辑完成后，按下面的步骤发布，老婆刷新手机就能看到更新。
-      </p>
 
-      <div style="margin-bottom:20px;">
-        <h4 style="margin-bottom:8px;">步骤 1：下载数据文件</h4>
-        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">
-          点击按钮下载更新后的 <code>exercises.js</code>，保存到 <code>data/</code> 文件夹替换原文件
+    <!-- 服务器模式：一键发布 -->
+    <div id="publish-server-mode" style="display:none;">
+      <div class="publish-card">
+        <h3>🚀 一键发布</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
+          通过本地服务器运行 ✅ 编辑完成后点击按钮直接发布。
         </p>
-        <button class="btn btn-primary btn-lg" onclick="downloadExercisesJs()" style="width:100%;">
-          📥 下载 exercises.js
+        <button class="btn btn-publish btn-lg" onclick="publishToServer()" id="btnPublish" style="width:100%;">
+          🚀 一键发布到网站
         </button>
+        <p style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;text-align:center;" id="publishStatus"></p>
       </div>
 
-      <div style="margin-bottom:20px;">
-        <h4 style="margin-bottom:8px;">步骤 2：推送到 GitHub</h4>
-        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">
-          在项目文件夹打开终端（或 Git Bash），运行以下命令：
-        </p>
-        <div class="code-block" id="gitCommands">cd workout-planner
-git add data/exercises.js
-git commit -m "更新训练计划"
-git push</div>
-        <button class="btn btn-outline btn-sm" onclick="copyGitCommands()">📋 复制命令</button>
-      </div>
-
-      <div style="background:var(--success-light);padding:16px;border-radius:8px;">
-        <h4 style="margin-bottom:4px;">✅ 步骤 3：告诉老婆</h4>
+      <div style="background:var(--success-light);padding:16px;border-radius:8px;margin-bottom:16px;">
+        <h4 style="margin-bottom:4px;">✅ 发布后</h4>
         <p style="font-size:0.82rem;color:var(--text-muted);">
-          推送后等 1-2 分钟，让老婆在手机浏览器刷新<br>
+          等 1-2 分钟，让老婆刷新<br>
           <a href="https://lany-jyc.github.io/workout-planner/" target="_blank" style="color:var(--primary);font-weight:600;">
             🔗 https://lany-jyc.github.io/workout-planner/
           </a>
         </p>
+      </div>
+    </div>
+
+    <!-- 手动模式：文件打开时 -->
+    <div id="publish-manual-mode">
+      <div class="publish-card">
+        <h3>🚀 发布到网站</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
+          你是直接双击打开的。推荐用 <strong>start.bat</strong> 启动以支持一键发布。
+        </p>
+
+        <div style="margin-bottom:20px;">
+          <h4 style="margin-bottom:8px;">步骤 1：下载数据文件</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">
+            点击按钮下载 <code>exercises.js</code>，保存到 <code>data/</code> 文件夹替换原文件
+          </p>
+          <button class="btn btn-primary btn-lg" onclick="downloadExercisesJs()" style="width:100%;">
+            📥 下载 exercises.js
+          </button>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <h4 style="margin-bottom:8px;">步骤 2：推送到 GitHub</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">
+            在项目文件夹打开终端，运行以下命令：
+          </p>
+          <div class="code-block" id="gitCommands">cd workout-planner
+git add data/exercises.js
+git commit -m "更新训练计划"
+git push</div>
+          <button class="btn btn-outline btn-sm" onclick="copyGitCommands()">📋 复制命令</button>
+        </div>
+
+        <div style="background:var(--success-light);padding:16px;border-radius:8px;">
+          <h4 style="margin-bottom:4px;">✅ 步骤 3：告诉老婆</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);">
+            推送后等 1-2 分钟刷新<br>
+            <a href="https://lany-jyc.github.io/workout-planner/" target="_blank" style="color:var(--primary);font-weight:600;">
+              🔗 https://lany-jyc.github.io/workout-planner/
+            </a>
+          </p>
+        </div>
       </div>
     </div>
 
@@ -597,7 +625,54 @@ function renderPreview() {
   }).join('');
 }
 
+// ===== SERVER MODE DETECTION =====
+const isServerMode = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+if (isServerMode) {
+  document.getElementById('publish-server-mode').style.display = 'block';
+  document.getElementById('publish-manual-mode').style.display = 'none';
+  // Update header badge
+  const badge = document.querySelector('.header .badge');
+  if (badge) badge.textContent = '⚡ 服务器模式';
+}
+
 // ===== PUBLISH =====
+async function publishToServer() {
+  const btn = document.getElementById('btnPublish');
+  const status = document.getElementById('publishStatus');
+  btn.disabled = true;
+  btn.textContent = '⏳ 发布中...';
+  status.textContent = '';
+
+  try {
+    const content = generateExercisesJs();
+    const res = await fetch('http://localhost:3456/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content }),
+    });
+    const result = await res.json();
+    if (result.ok) {
+      btn.textContent = '✅ 发布成功！';
+      btn.className = 'btn btn-success btn-lg';
+      btn.style.width = '100%';
+      status.textContent = '等待 1-2 分钟后老婆刷新网页即可看到更新';
+      showToast('✅ ' + result.message);
+    } else {
+      btn.textContent = '🚀 一键发布到网站';
+      btn.className = 'btn btn-publish btn-lg';
+      btn.disabled = false;
+      status.textContent = '❌ ' + result.message;
+      showToast('❌ ' + result.message);
+    }
+  } catch (err) {
+    btn.textContent = '🚀 一键发布到网站';
+    btn.className = 'btn btn-publish btn-lg';
+    btn.disabled = false;
+    status.textContent = '❌ 无法连接服务器，请确认 start.bat 已启动';
+    showToast('❌ 无法连接服务器');
+  }
+}
+
 function generateExercisesJs() {
   // Pretty-print the library
   const libEntries = Object.keys(library).sort((a, b) => a.localeCompare(b, 'zh')).map(name => {
