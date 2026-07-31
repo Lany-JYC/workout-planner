@@ -561,10 +561,17 @@ function renderDayPanel() {
     const icon = typeIcons[ex.type] || '💪';
     const bg = typeColors[ex.type] || '#fce4e9';
     const videoHtml = ex.video
-      ? `<div class="detail-block">
-          <div class="detail-label">🎬 教学视频</div>
-          <div class="video-wrapper">${parseVideoEmbed(ex.video)}</div>
-        </div>`
+      ? (() => {
+          const v = parseVideoEmbed(ex.video);
+          const bLink = v.bilibiliUrl
+            ? `<div style="text-align:center;margin-top:6px;"><a href="${escapeHtml(v.bilibiliUrl)}" target="_blank" style="color:var(--primary);font-size:0.78rem;font-weight:600;text-decoration:none;">📱 在哔哩哔哩中打开 →</a></div>`
+            : '';
+          return `<div class="detail-block">
+            <div class="detail-label">🎬 教学视频</div>
+            <div class="video-wrapper">${v.embed}</div>
+            ${bLink}
+          </div>`;
+        })()
       : `<div class="detail-block">
           <div class="detail-label">🎬 教学视频</div>
           <div class="video-wrapper">
@@ -689,21 +696,46 @@ function getDateKeyForSelected() {
 }
 
 function parseVideoEmbed(url) {
-  if (!url) return '';
-  let match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/);
+  if (!url) return { embed: '', bilibiliUrl: '' };
+  let match;
+
+  // Extract clean URL from B站 share text like "【标题】https://www.bilibili.com/video/BV..."
+  let cleanUrl = url;
+  let m = url.match(/(https?:\/\/[^\s]*bilibili\.com\/video\/BV[a-zA-Z0-9]+[^\s\]】]*)/);
+  if (m) cleanUrl = m[1];
+
+  // YouTube
+  match = cleanUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/);
   if (match) {
-    return `<iframe src="https://www.youtube.com/embed/${match[1]}" allowfullscreen></iframe>`;
+    return { embed: `<iframe src="https://www.youtube.com/embed/${match[1]}" allowfullscreen></iframe>`, bilibiliUrl: '' };
   }
-  match = url.match(/bilibili\.com\/video\/(BV[a-zA-Z0-9]+)/);
+
+  // Bilibili BV
+  match = cleanUrl.match(/bilibili\.com\/video\/(BV[a-zA-Z0-9]+)/);
   if (match) {
-    return `<iframe src="https://player.bilibili.com/player.html?bvid=${match[1]}&page=1" allowfullscreen></iframe>`;
+    const bv = match[1];
+    const bUrl = `https://www.bilibili.com/video/${bv}`;
+    return {
+      embed: `<iframe src="https://player.bilibili.com/player.html?bvid=${bv}&page=1&high_quality=1" allowfullscreen></iframe>`,
+      bilibiliUrl: bUrl
+    };
   }
-  match = url.match(/b23\.tv\/([a-zA-Z0-9]+)/);
+
+  // B23 short link
+  match = cleanUrl.match(/b23\.tv\/([a-zA-Z0-9]+)/);
   if (match) {
-    return `<div style="text-align:center;padding:12px;color:var(--text-muted);">🔗 B站短链接：<br><a href="${escapeHtml(url)}" target="_blank">${escapeHtml(url)}</a></div>`;
+    return { embed: `<div style="text-align:center;padding:12px;color:var(--text-muted);">🔗 <a href="${escapeHtml(cleanUrl)}" target="_blank">在哔哩哔哩中打开</a></div>`, bilibiliUrl: cleanUrl };
   }
-  if (url.includes('<iframe')) return url;
-  return `<div style="text-align:center;padding:12px;color:var(--text-muted);">🔗 <a href="${escapeHtml(url)}" target="_blank">点击查看视频</a></div>`;
+
+  if (url.includes('<iframe')) return { embed: url, bilibiliUrl: '' };
+
+  // Unknown format — try to extract any URL
+  m = url.match(/(https?:\/\/[^\s\]】]+)/);
+  if (m) {
+    return { embed: `<div style="text-align:center;padding:12px;color:var(--text-muted);">🔗 <a href="${escapeHtml(m[1])}" target="_blank">点击查看视频</a></div>`, bilibiliUrl: m[1] };
+  }
+
+  return { embed: `<div style="text-align:center;padding:12px;color:var(--text-muted);">🔗 <a href="${escapeHtml(url)}" target="_blank">点击查看视频</a></div>`, bilibiliUrl: url };
 }
 
 function escapeHtml(str) {
