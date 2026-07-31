@@ -773,7 +773,7 @@ function saveExercise() {
     sets: parseInt(document.getElementById('exSets').value) || 3,
     reps: document.getElementById('exReps').value.trim() || '12次',
     desc: document.getElementById('exDesc').value.trim(),
-    video: document.getElementById('exVideo').value.trim(),
+    video: cleanVideoUrl(document.getElementById('exVideo').value.trim()),
   };
 
   // If renaming, remove old key and update weekPlan references
@@ -832,6 +832,23 @@ function switchTab(tab) {
 }
 
 // ===== HELPERS =====
+function cleanVideoUrl(raw) {
+  if (!raw) return '';
+  // Already clean URL
+  if (/^https?:\/\//.test(raw) && !raw.includes('】') && !raw.includes('【')) return raw;
+  // Extract URL from B站 share text like "【标题】https://www.bilibili.com/video/BV..."
+  let m = raw.match(/https?:\/\/(?:www\.)?bilibili\.com\/video\/BV[a-zA-Z0-9]+/);
+  if (m) return m[0];
+  m = raw.match(/https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[a-zA-Z0-9_-]+/);
+  if (m) return m[0];
+  m = raw.match(/https?:\/\/youtu\.be\/[a-zA-Z0-9_-]+/);
+  if (m) return m[0];
+  m = raw.match(/https?:\/\/b23\.tv\/[a-zA-Z0-9]+/);
+  if (m) return m[0];
+  // Return as-is if no URL pattern found
+  return raw;
+}
+
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;

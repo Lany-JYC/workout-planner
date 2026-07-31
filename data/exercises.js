@@ -12,7 +12,7 @@ var EXERCISE_LIBRARY = {
   '腹部训练': {
     type: 'strength', sets: 3, reps: '12次',
     desc: '4:59-6:19和8:57后面的不用看\n如果能做两个循环就做下去，累了就只需要做一次循环(即跟练视频一次）',
-    video: '【【Pamela Reif 帕梅拉】10分钟腹部训练 | 新手友好 | 练就钢铁马甲线 | 帕老师带你运动燃脂】https://www.bilibili.com/video/BV1kA411q7cH?vd_source=9c90d6c94bbd98244baf8360e34c7bfa'
+    video: 'https://www.bilibili.com/video/BV1kA411q7cH'
   },
   '弓步蹲': {
     type: 'strength', sets: 3, reps: '每侧12次',
@@ -32,12 +32,12 @@ var EXERCISE_LIBRARY = {
   '拉伸放松': {
     type: 'flexibility', sets: 3, reps: '每个动作30秒',
     desc: '【动作要领】\n1. 选择需要放松的肌群\n2. 缓慢进入拉伸位置\n3. 感到轻微拉伸感即可，不要疼痛\n4. 保持姿势，不要弹震\n5. 每个部位保持20-30s\n\n【常见拉伸】\n• 大腿前侧：站立拉脚踝\n• 大腿后侧：坐姿前屈\n• 背部：猫牛式\n• 肩部：交叉手臂拉伸\n\n【呼吸节奏】\n深呼吸，每次呼气时尝试再放松一点\n\n\n具体可看视频',
-    video: '【腹部拉伸 自用】https://www.bilibili.com/video/BV1nR4y1u7EJ?vd_source=9c90d6c94bbd98244baf8360e34c7bfa'
+    video: 'https://www.bilibili.com/video/BV1nR4y1u7EJ'
   },
   '帕梅拉（改善圆肩驼背）': {
     type: 'flexibility', sets: 1, reps: '10分钟',
     desc: '',
-    video: '【帕梅拉 - 10分钟拜拜圆肩驼背｜拉伸训练 改善不良体态 (Pamela Reif Official)】https://www.bilibili.com/video/BV1gF411A7fW?vd_source=9c90d6c94bbd98244baf8360e34c7bfa'
+    video: 'https://www.bilibili.com/video/BV1gF411A7fW'
   },
   '平板支撑': {
     type: 'core', sets: 3, reps: '30秒',
@@ -47,7 +47,7 @@ var EXERCISE_LIBRARY = {
   '全身普拉提': {
     type: 'flexibility', sets: 1, reps: '35分钟',
     desc: '',
-    video: '【35分钟全身塑形普拉提｜紧致线条·提升力量｜居家无器械｜LUNACHEN】https://www.bilibili.com/video/BV19a3M6kExJ?vd_source=9c90d6c94bbd98244baf8360e34c7bfa'
+    video: 'https://www.bilibili.com/video/BV19a3M6kExJ'
   },
   '深蹲': {
     type: 'strength', sets: 3, reps: '15次',
