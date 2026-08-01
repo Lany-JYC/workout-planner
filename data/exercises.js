@@ -1,6 +1,6 @@
 /* ============================================
    💪 璁璁老婆的运动计划 — 训练动作库
-   由管理页面自动生成于 2026/8/1 13:58:22
+   由管理页面自动生成于 2026/8/1 14:00:52
    ============================================ */
 
 var EXERCISE_LIBRARY = {
@@ -10,7 +10,7 @@ var EXERCISE_LIBRARY = {
     video: 'https://www.bilibili.com/video/BV1uf4y187x1'
   },
   '背部训练': {
-    type: 'strength', sets: 1, reps: '25分钟',
+    type: 'strength', sets: 1, reps: '16分钟',
     desc: '跟练一组，主要训练背部，活动开背部',
     video: 'https://www.bilibili.com/video/BV1Gz421C7G1'
   },
