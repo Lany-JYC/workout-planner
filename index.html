@@ -391,6 +391,19 @@
       </div>
       <div class="exercise-list" id="exerciseList"></div>
     </div>
+
+    <!-- Data backup -->
+    <div style="background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-top:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span style="font-weight:700;font-size:0.88rem;">💾 数据备份</span>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-outline btn-sm" onclick="downloadBackup()">📥 下载数据文件</button>
+          <button class="btn btn-outline btn-sm" onclick="document.getElementById('importFile').click()">📤 导入数据文件</button>
+        </div>
+      </div>
+      <div style="font-size:0.73rem;color:var(--text-muted);margin-top:4px;">备份包含打卡记录和本周训练数据，可用于迁移到新手机</div>
+      <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importBackup(event)">
+    </div>
   </div>
 
   <!-- ===== TAB: PROGRESS ===== -->
@@ -810,6 +823,49 @@ function resetWeek() {
     saveData();
     renderAll();
   }
+}
+
+// ===== BACKUP =====
+function downloadBackup() {
+  const data = JSON.stringify(appData, null, 2);
+  const blob = new Blob([data], { type: 'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  a.download = `workout-backup-${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!confirm('导入数据将覆盖当前所有打卡记录和训练数据，确定继续？')) {
+    event.target.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.weeks && data.checkins) {
+        appData = data;
+        saveData();
+        renderAll();
+        alert('✅ 数据导入成功！');
+      } else {
+        alert('⚠️ 文件格式不正确，请选择 workout-planner 备份文件');
+      }
+    } catch(err) {
+      alert('⚠️ 文件解析失败，请确认选择的是 JSON 备份文件');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
 }
 
 // ===== INIT =====

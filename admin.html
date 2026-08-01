@@ -418,6 +418,19 @@ git push</div>
       </div>
     </div>
 
+    <!-- Data backup -->
+    <div class="publish-card">
+      <h3>💾 数据备份与迁移</h3>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:14px;">
+        备份或恢复你的编辑数据（动作库 + 周计划）。可用于换电脑时迁移数据，或发布前备份。
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="downloadBackup()">📥 下载数据文件 (JSON)</button>
+        <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">📤 导入数据文件</button>
+      </div>
+      <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importBackup(event)">
+    </div>
+
     <!-- Data preview -->
     <div class="publish-card">
       <h3>📄 数据预览</h3>
@@ -886,6 +899,52 @@ function renderAll() {
   // If week plan tab is visible, render it
   const planTab = document.getElementById('tab-plan');
   if (planTab && planTab.style.display !== 'none') renderWeekPlan();
+}
+
+// ===== BACKUP =====
+function downloadBackup() {
+  const data = JSON.stringify({ library, weekPlan }, null, 2);
+  const blob = new Blob([data], { type: 'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  a.download = `admin-backup-${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✅ 数据文件下载中…');
+}
+
+function importBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!confirm('导入数据将覆盖当前的动作库和训练计划，确定继续？')) {
+    event.target.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.library && data.weekPlan) {
+        library = data.library;
+        weekPlan = data.weekPlan;
+        saveData();
+        renderAll();
+        updateDataPreview();
+        showToast('✅ 数据导入成功！');
+      } else {
+        alert('⚠️ 文件格式不正确，请选择 workout-planner 管理备份文件');
+      }
+    } catch(err) {
+      alert('⚠️ 文件解析失败，请确认选择的是 JSON 备份文件');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
 }
 
 // ===== INIT =====
