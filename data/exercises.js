@@ -22,7 +22,7 @@ var EXERCISE_LIBRARY = {
   '对侧膝触肘': {
     type: 'core', sets: 4, reps: '12次',
     desc: '',
-    video: ''
+    video: 'https://www.douyin.com/video/7659045049820555648'
   },
   '腹部训练': {
     type: 'strength', sets: 3, reps: '12次',
