@@ -1,6 +1,6 @@
 /* ============================================
    💪 璁璁老婆的运动计划 — 训练动作库
-   由管理页面自动生成于 2026/8/2 15:31:30
+   由管理页面自动生成于 2026/8/2 15:36:37
    ============================================ */
 
 var EXERCISE_LIBRARY = {
@@ -44,15 +44,15 @@ var EXERCISE_LIBRARY = {
     desc: '【动作要领】\n1. 选择需要放松的肌群\n2. 缓慢进入拉伸位置\n3. 感到轻微拉伸感即可，不要疼痛\n4. 保持姿势，不要弹震\n5. 每个部位保持20-30s\n\n【常见拉伸】\n• 大腿前侧：站立拉脚踝\n• 大腿后侧：坐姿前屈\n• 背部：猫牛式\n• 肩部：交叉手臂拉伸\n\n【呼吸节奏】\n深呼吸，每次呼气时尝试再放松一点\n\n\n具体可看视频',
     video: '【腹部拉伸 自用】https://www.bilibili.com/video/BV1nR4y1u7EJ?vd_source=9c90d6c94bbd98244baf8360e34c7bfa'
   },
+  '内收肌': {
+    type: 'core', sets: 1, reps: '8分钟',
+    desc: '',
+    video: 'https://www.bilibili.com/video/BV1GBULBpE8T'
+  },
   '帕梅拉（改善圆肩驼背）': {
     type: 'flexibility', sets: 1, reps: '10分钟',
     desc: '',
     video: '【帕梅拉 - 10分钟拜拜圆肩驼背｜拉伸训练 改善不良体态 (Pamela Reif Official)】https://www.bilibili.com/video/BV1gF411A7fW?vd_source=9c90d6c94bbd98244baf8360e34c7bfa'
-  },
-  '盆底肌': {
-    type: 'core', sets: 1, reps: '8分钟',
-    desc: '',
-    video: 'https://www.bilibili.com/video/BV1GBULBpE8T'
   },
   '平板支撑': {
     type: 'core', sets: 3, reps: '30秒',
@@ -108,11 +108,11 @@ var EXERCISE_LIBRARY = {
 
 // 每周训练计划（动作名称必须在上面的动作库中存在）
 var WEEKLY_PLAN = {
-  mon: [],
-  tue: [],
-  wed: [],
-  thu: [],
+  mon: ['瑜伽'],
+  tue: ['帕梅拉（改善圆肩驼背）', '全身普拉提', '蝴蝶双拍（躺姿）'],
+  wed: ['手臂训练', '体态纠正', '拉伸放松'],
+  thu: ['背部训练', '背部拉伸', '死虫式', '坐姿V字卷腹', '仰卧摸踝'],
   fri: ['全身普拉提', '帕梅拉（改善圆肩驼背）', '腹部训练', '拉伸放松'],
   sat: ['体态纠正', '背部训练', '背部拉伸'],
-  sun: ['盆底肌', '臀部训练', '死虫式', '对侧膝触肘', '坐姿V字卷腹', '仰卧摸踝']
+  sun: ['内收肌', '臀部训练', '死虫式', '对侧膝触肘', '坐姿V字卷腹', '仰卧摸踝']
 };
