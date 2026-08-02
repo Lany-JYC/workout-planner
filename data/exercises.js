@@ -1,6 +1,6 @@
 /* ============================================
    💪 璁璁老婆的运动计划 — 训练动作库
-   由管理页面自动生成于 2026/8/1 14:00:52
+   由管理页面自动生成于 2026/8/2 14:57:00
    ============================================ */
 
 var EXERCISE_LIBRARY = {
@@ -19,15 +19,15 @@ var EXERCISE_LIBRARY = {
     desc: '【动作要领】\n1. 仰卧，双膝弯曲，双脚平放地面\n2. 手臂放在身体两侧\n3. 臀部发力向上抬起\n4. 在最高点夹紧臀部停留1-2秒\n5. 缓慢下放\n6. 感受臀部收紧\n\n【注意事项】\n⚠️ 不要用腰部代偿\n⚠️ 下巴微收\n\n【呼吸节奏】\n抬起呼气，下放吸气',
     video: ''
   },
+  '对侧膝触肘': {
+    type: 'core', sets: 4, reps: '12次',
+    desc: '',
+    video: ''
+  },
   '腹部训练': {
     type: 'strength', sets: 3, reps: '12次',
     desc: '4:59-6:19和8:57后面的不用看\n如果能做两个循环就做下去，累了就只需要做一次循环(即跟练视频一次）',
     video: '【【Pamela Reif 帕梅拉】10分钟腹部训练 | 新手友好 | 练就钢铁马甲线 | 帕老师带你运动燃脂】https://www.bilibili.com/video/BV1kA411q7cH?vd_source=9c90d6c94bbd98244baf8360e34c7bfa'
-  },
-  '弓步蹲': {
-    type: 'strength', sets: 3, reps: '每侧12次',
-    desc: '【动作要领】\n1. 站立，双脚与髋同宽\n2. 向前迈一大步\n3. 双膝弯曲至约90度\n4. 后膝接近地面但不触地\n5. 前脚发力推回起始位置\n\n【注意事项】\n⚠️ 前膝不要超过脚尖\n⚠️ 上身保持直立\n⚠️ 核心收紧保持平衡\n\n【呼吸节奏】\n下蹲吸气，推起呼气',
-    video: ''
   },
   '蝴蝶双拍（躺姿）': {
     type: 'strength', sets: 4, reps: '12次',
@@ -48,6 +48,11 @@ var EXERCISE_LIBRARY = {
     type: 'flexibility', sets: 1, reps: '10分钟',
     desc: '',
     video: '【帕梅拉 - 10分钟拜拜圆肩驼背｜拉伸训练 改善不良体态 (Pamela Reif Official)】https://www.bilibili.com/video/BV1gF411A7fW?vd_source=9c90d6c94bbd98244baf8360e34c7bfa'
+  },
+  '盆底肌': {
+    type: 'core', sets: 1, reps: '8分钟',
+    desc: '',
+    video: 'https://www.bilibili.com/video/BV1GBULBpE8T'
   },
   '平板支撑': {
     type: 'core', sets: 3, reps: '30秒',
@@ -72,17 +77,17 @@ var EXERCISE_LIBRARY = {
   '死虫式': {
     type: 'core', sets: 3, reps: '每侧12次',
     desc: '正确发力感觉\n\n做对了应该感觉：\n\n✅ 肚脐向脊柱收紧\n\n✅ 腰始终贴着地面\n\n✅ 腹部持续紧绷\n\n而不是：\n\n❌ 大腿很酸\n\n❌ 脖子很酸\n\n❌ 腰离开地面',
-    video: 'https://www.douyin.com/video/7660138011665631995'
-  },
-  '对侧膝触肘': {
-    type: 'core', sets: 3, reps: '每侧12次',
-    desc: '上腹+侧腹训练，精致腰两侧赘肉\n\n新手注意：交替一次双腿回到起始位再交替另一侧，找到发力感再连贯交替',
-    video: 'https://www.douyin.com/video/7659045049820555648'
+    video: 'https://cn.bing.com/search?q=2.30+%3A7pm+q%40R.xS+03%2F10+OXM%3A%2F+%E5%B1%85%E5%AE%B6%E6%A0%B8%E5%BF%83%E8%AE%AD%E7%BB%83%EF%BC%8C%E6%AD%BB%E8%99%AB%E5%BC%8F%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF+%E6%9C%89%E6%95%88%E6%94%B9%E5%96%84%E5%A4%A7%E8%82%9A%E5%AD%90%EF%BC%8C%E5%B0%8F%E8%85%B9%E7%AA%81%E5%87%BA%EF%BC%8C%E9%AA%A8%E7%9B%86%E5%89%8D%E5%80%BE%EF%BC%8C%E8%BA%BA%E7%9D%80%E5%B0%B1%E8%83%BD%E7%98%A6%EF%BC%81+%23+%E5%B1%85%E5%AE%B6%E9%94%BB%E7%82%BC+%23+%E6%AD%BB%E8%99%AB%E5%BC%8F+%23+%E7%98%A6%E8%82%9A%E5%AD%90+%23+%E6%A0%B8%E5%BF%83%E8%AE%AD%E7%BB%83+%23+%E6%A0%B8%E5%BF%83+https%3A%2F%2Fv.douyin.com%2FU0rAgm9CF-8%2F+%E5%A4%8D%E5%88%B6%E6%AD%A4%E9%93%BE%E6%8E%A5%EF%BC%8C%E6%89%93%E5%BC%80Dou%E9%9F%B3%E6%90%9C%E7%B4%A2%EF%BC%8C%E7%9B%B4%E6%8E%A5%E8%A7%82%E7%9C%8B%E8%A7%86%E9%A2%91%EF%BC%81&cvid=3ecefb5cbf3e4e86ad415c4fac5ea23b&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOdIBCDEyODhqMGo3qAIAsAIA&FORM=ANAB01&PC=CNNDSE'
   },
   '体态纠正': {
     type: 'flexibility', sets: 1, reps: '35分钟',
     desc: '跟着视频做，老婆做不了的就跳过',
     video: 'https://www.bilibili.com/video/BV1E64y1x7zE'
+  },
+  '臀部训练': {
+    type: 'strength', sets: 1, reps: '16分钟',
+    desc: '',
+    video: 'https://www.bilibili.com/video/BV1r5411s7Ck'
   }
 };
 
@@ -94,5 +99,5 @@ var WEEKLY_PLAN = {
   thu: [],
   fri: ['全身普拉提', '帕梅拉（改善圆肩驼背）', '腹部训练', '拉伸放松'],
   sat: ['体态纠正', '背部训练', '背部拉伸'],
-  sun: []
+  sun: ['盆底肌', '臀部训练']
 };
