@@ -22,7 +22,7 @@ var EXERCISE_LIBRARY = {
   '对侧膝触肘': {
     type: 'core', sets: 4, reps: '12次',
     desc: '',
-    video: ''
+    video: 'https://www.douyin.com/video/7659045049820555648'
   },
   '腹部训练': {
     type: 'strength', sets: 3, reps: '12次',
@@ -77,7 +77,7 @@ var EXERCISE_LIBRARY = {
   '死虫式': {
     type: 'core', sets: 3, reps: '每侧12次',
     desc: '正确发力感觉\n\n做对了应该感觉：\n\n✅ 肚脐向脊柱收紧\n\n✅ 腰始终贴着地面\n\n✅ 腹部持续紧绷\n\n而不是：\n\n❌ 大腿很酸\n\n❌ 脖子很酸\n\n❌ 腰离开地面',
-    video: 'https://cn.bing.com/search?q=2.30+%3A7pm+q%40R.xS+03%2F10+OXM%3A%2F+%E5%B1%85%E5%AE%B6%E6%A0%B8%E5%BF%83%E8%AE%AD%E7%BB%83%EF%BC%8C%E6%AD%BB%E8%99%AB%E5%BC%8F%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF+%E6%9C%89%E6%95%88%E6%94%B9%E5%96%84%E5%A4%A7%E8%82%9A%E5%AD%90%EF%BC%8C%E5%B0%8F%E8%85%B9%E7%AA%81%E5%87%BA%EF%BC%8C%E9%AA%A8%E7%9B%86%E5%89%8D%E5%80%BE%EF%BC%8C%E8%BA%BA%E7%9D%80%E5%B0%B1%E8%83%BD%E7%98%A6%EF%BC%81+%23+%E5%B1%85%E5%AE%B6%E9%94%BB%E7%82%BC+%23+%E6%AD%BB%E8%99%AB%E5%BC%8F+%23+%E7%98%A6%E8%82%9A%E5%AD%90+%23+%E6%A0%B8%E5%BF%83%E8%AE%AD%E7%BB%83+%23+%E6%A0%B8%E5%BF%83+https%3A%2F%2Fv.douyin.com%2FU0rAgm9CF-8%2F+%E5%A4%8D%E5%88%B6%E6%AD%A4%E9%93%BE%E6%8E%A5%EF%BC%8C%E6%89%93%E5%BC%80Dou%E9%9F%B3%E6%90%9C%E7%B4%A2%EF%BC%8C%E7%9B%B4%E6%8E%A5%E8%A7%82%E7%9C%8B%E8%A7%86%E9%A2%91%EF%BC%81&cvid=3ecefb5cbf3e4e86ad415c4fac5ea23b&gs_lcrp=EgRlZGdlKgYIABBFGDkyBggAEEUYOdIBCDEyODhqMGo3qAIAsAIA&FORM=ANAB01&PC=CNNDSE'
+    video: 'https://www.douyin.com/video/7660138011665631995'
   },
   '体态纠正': {
     type: 'flexibility', sets: 1, reps: '35分钟',
