@@ -72,7 +72,7 @@ var EXERCISE_LIBRARY = {
   '死虫式': {
     type: 'core', sets: 3, reps: '每侧12次',
     desc: '正确发力感觉\n\n做对了应该感觉：\n\n✅ 肚脐向脊柱收紧\n\n✅ 腰始终贴着地面\n\n✅ 腹部持续紧绷\n\n而不是：\n\n❌ 大腿很酸\n\n❌ 脖子很酸\n\n❌ 腰离开地面',
-    video: ''
+    video: 'https://www.douyin.com/video/7660138011665631995'
   },
   '体态纠正': {
     type: 'flexibility', sets: 1, reps: '35分钟',
