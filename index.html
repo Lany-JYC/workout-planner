@@ -743,13 +743,18 @@ function parseVideoEmbed(url) {
     return { embed: `<div style="text-align:center;padding:12px;color:var(--text-muted);">🔗 <a href="${escapeHtml(cleanUrl)}" target="_blank">在哔哩哔哩中打开</a></div>`, bilibiliUrl: cleanUrl };
   }
 
-  // Douyin — video page URL
+  // Douyin — video page URL (can't iframe, show link card)
   match = cleanUrl.match(/douyin\.com\/video\/(\d+)/);
   if (match) {
     const videoId = match[1];
     const dyUrl = `https://www.douyin.com/video/${videoId}`;
     return {
-      embed: `<iframe src="https://www.douyin.com/embed/${videoId}" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups" referrerpolicy="no-referrer"></iframe>`,
+      embed: `<div style="text-align:center;padding:20px 12px;background:linear-gradient(135deg,#111 0%,#1a1a2e 100%);border-radius:8px;">
+        <div style="font-size:2rem;margin-bottom:8px;">🎵</div>
+        <div style="color:#fff;font-size:0.9rem;font-weight:600;margin-bottom:4px;">抖音教学视频</div>
+        <div style="color:#999;font-size:0.75rem;margin-bottom:10px;">点击下方按钮在抖音中观看</div>
+        <a href="${escapeHtml(dyUrl)}" target="_blank" style="display:inline-block;background:#fe2c55;color:#fff;padding:8px 24px;border-radius:20px;text-decoration:none;font-size:0.85rem;font-weight:600;">📱 在抖音中打开 →</a>
+      </div>`,
       bilibiliUrl: '',
       douyinUrl: dyUrl
     };
