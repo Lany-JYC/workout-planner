@@ -579,10 +579,13 @@ function renderDayPanel() {
           const bLink = v.bilibiliUrl
             ? `<div style="text-align:center;margin-top:6px;"><a href="${escapeHtml(v.bilibiliUrl)}" target="_blank" style="color:var(--primary);font-size:0.78rem;font-weight:600;text-decoration:none;">📱 在哔哩哔哩中打开 →</a></div>`
             : '';
+          const dLink = v.douyinUrl
+            ? `<div style="text-align:center;margin-top:6px;"><a href="${escapeHtml(v.douyinUrl)}" target="_blank" style="color:var(--primary);font-size:0.78rem;font-weight:600;text-decoration:none;">📱 在抖音中打开 →</a></div>`
+            : '';
           return `<div class="detail-block">
             <div class="detail-label">🎬 教学视频</div>
             <div class="video-wrapper">${v.embed}</div>
-            ${bLink}
+            ${bLink}${dLink}
           </div>`;
         })()
       : `<div class="detail-block">
@@ -738,6 +741,23 @@ function parseVideoEmbed(url) {
   match = cleanUrl.match(/b23\.tv\/([a-zA-Z0-9]+)/);
   if (match) {
     return { embed: `<div style="text-align:center;padding:12px;color:var(--text-muted);">🔗 <a href="${escapeHtml(cleanUrl)}" target="_blank">在哔哩哔哩中打开</a></div>`, bilibiliUrl: cleanUrl };
+  }
+
+  // Douyin — video page URL
+  match = cleanUrl.match(/douyin\.com\/video\/(\d+)/);
+  if (match) {
+    const videoId = match[1];
+    const dyUrl = `https://www.douyin.com/video/${videoId}`;
+    return {
+      embed: `<iframe src="https://www.douyin.com/embed/${videoId}" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups" referrerpolicy="no-referrer"></iframe>`,
+      bilibiliUrl: '',
+      douyinUrl: dyUrl
+    };
+  }
+
+  // Douyin — short link (can't resolve client-side, show link)
+  if (/v\.douyin\.com\/[a-zA-Z0-9]+/.test(cleanUrl)) {
+    return { embed: `<div style="text-align:center;padding:12px;color:var(--text-muted);">🔗 <a href="${escapeHtml(cleanUrl)}" target="_blank">在抖音中打开</a></div>`, bilibiliUrl: '', douyinUrl: cleanUrl };
   }
 
   if (url.includes('<iframe')) return { embed: url, bilibiliUrl: '' };

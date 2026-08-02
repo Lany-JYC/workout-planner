@@ -473,8 +473,8 @@ git push</div>
       <textarea id="exDesc" placeholder="描述动作要领、注意事项、呼吸节奏等..."></textarea>
     </div>
     <div class="form-group">
-      <label>教学视频链接（YouTube / Bilibili）</label>
-      <input type="text" id="exVideo" placeholder="粘贴视频链接...">
+      <label>教学视频链接（Bilibili / 抖音 / YouTube）</label>
+      <input type="text" id="exVideo" placeholder="粘贴视频链接，抖音需粘贴 douyin.com/video/... 完整地址">
     </div>
     <div style="display:flex;gap:10px;margin-top:8px;">
       <button class="btn btn-primary" onclick="saveExercise()" style="flex:1;">💾 保存动作</button>
@@ -857,6 +857,11 @@ function cleanVideoUrl(raw) {
   m = raw.match(/https?:\/\/youtu\.be\/[a-zA-Z0-9_-]+/);
   if (m) return m[0];
   m = raw.match(/https?:\/\/b23\.tv\/[a-zA-Z0-9]+/);
+  if (m) return m[0];
+  // Douyin
+  m = raw.match(/https?:\/\/(?:www\.)?douyin\.com\/video\/\d+/);
+  if (m) return m[0];
+  m = raw.match(/https?:\/\/v\.douyin\.com\/[a-zA-Z0-9]+\/?/);
   if (m) return m[0];
   // Return as-is if no URL pattern found
   return raw;
