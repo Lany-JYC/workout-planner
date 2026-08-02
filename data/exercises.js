@@ -1,6 +1,6 @@
 /* ============================================
    💪 璁璁老婆的运动计划 — 训练动作库
-   由管理页面自动生成于 2026/8/2 14:59:36
+   由管理页面自动生成于 2026/8/2 15:26:22
    ============================================ */
 
 var EXERCISE_LIBRARY = {
@@ -22,7 +22,7 @@ var EXERCISE_LIBRARY = {
   '对侧膝触肘': {
     type: 'core', sets: 4, reps: '12次',
     desc: '',
-    video: 'https://www.douyin.com/video/7659045049820555648'
+    video: 'douyin.com/video/7659045049820555648'
   },
   '腹部训练': {
     type: 'strength', sets: 3, reps: '12次',
@@ -38,11 +38,6 @@ var EXERCISE_LIBRARY = {
     type: 'core', sets: 3, reps: '20次',
     desc: '【动作要领】\n1. 仰卧，双膝弯曲，双脚平放\n2. 双手轻放在耳侧（不要用力拉头部）\n3. 用腹部力量将上半身卷起\n4. 肩胛骨离开地面即可\n5. 缓慢下放\n\n【注意事项】\n⚠️ 不要用颈部发力\n⚠️ 下背部保持贴地\n\n【呼吸节奏】\n卷起呼气，下放吸气',
     video: ''
-  },
-  '坐姿V字卷腹': {
-    type: 'core', sets: 3, reps: '15次',
-    desc: '居家练腹，主打下腹紧致，坐姿抬腿标准发力细节',
-    video: 'https://www.douyin.com/video/7634850845255519909'
   },
   '拉伸放松': {
     type: 'flexibility', sets: 3, reps: '每个动作30秒',
@@ -82,7 +77,7 @@ var EXERCISE_LIBRARY = {
   '死虫式': {
     type: 'core', sets: 3, reps: '每侧12次',
     desc: '正确发力感觉\n\n做对了应该感觉：\n\n✅ 肚脐向脊柱收紧\n\n✅ 腰始终贴着地面\n\n✅ 腹部持续紧绷\n\n而不是：\n\n❌ 大腿很酸\n\n❌ 脖子很酸\n\n❌ 腰离开地面',
-    video: 'https://www.douyin.com/video/7660138011665631995'
+    video: 'douyin.com/video/7660138011665631995'
   },
   '体态纠正': {
     type: 'flexibility', sets: 1, reps: '35分钟',
@@ -93,6 +88,11 @@ var EXERCISE_LIBRARY = {
     type: 'strength', sets: 1, reps: '16分钟',
     desc: '',
     video: 'https://www.bilibili.com/video/BV1r5411s7Ck'
+  },
+  '坐姿V字卷腹': {
+    type: 'core', sets: 4, reps: '12次',
+    desc: '',
+    video: 'https://www.douyin.com/video/7634850845255519909'
   }
 };
 
