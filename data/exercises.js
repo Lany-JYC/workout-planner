@@ -74,7 +74,7 @@ var EXERCISE_LIBRARY = {
     desc: '正确发力感觉\n\n做对了应该感觉：\n\n✅ 肚脐向脊柱收紧\n\n✅ 腰始终贴着地面\n\n✅ 腹部持续紧绷\n\n而不是：\n\n❌ 大腿很酸\n\n❌ 脖子很酸\n\n❌ 腰离开地面',
     video: 'https://www.douyin.com/video/7660138011665631995'
   },
-  '交替肘触膝': {
+  '对侧膝触肘': {
     type: 'core', sets: 3, reps: '每侧12次',
     desc: '上腹+侧腹训练，精致腰两侧赘肉\n\n新手注意：交替一次双腿回到起始位再交替另一侧，找到发力感再连贯交替',
     video: 'https://www.douyin.com/video/7659045049820555648'
