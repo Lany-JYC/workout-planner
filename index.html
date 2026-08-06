@@ -95,7 +95,7 @@
   /* ===== STATS ROW ===== */
   .stats-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 16px;
   }
@@ -371,6 +371,10 @@
       <div class="stat-card">
         <div class="num" id="stat-total">0</div>
         <div class="label">⭐ 总打卡数</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="stat-month">0 天</div>
+        <div class="label">📆 本月打卡</div>
       </div>
     </div>
 
@@ -657,9 +661,19 @@ function renderStats() {
     else break;
   }
 
+  // 本月打卡天数
+  const nowMonth = now.getMonth();
+  const nowYear = now.getFullYear();
+  let monthChecked = 0;
+  for (const dk of Object.keys(appData.checkins)) {
+    const [y, m] = dk.split('-').map(Number);
+    if (y === nowYear && m === nowMonth + 1) monthChecked++;
+  }
+
   document.getElementById('stat-streak').textContent = streak;
   document.getElementById('stat-week').textContent = `${weekChecked}/7`;
   document.getElementById('stat-total').textContent = totalCheckins;
+  document.getElementById('stat-month').textContent = `${monthChecked} 天`;
 }
 
 function renderProgress() {
