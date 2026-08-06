@@ -445,9 +445,8 @@ const PLAN = typeof WEEKLY_PLAN !== 'undefined' ? WEEKLY_PLAN : {};
 let appData = loadData();
 let selectedDay = DAY_KEYS[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1];
 
-// ===== DEMO MODE: ?demo 参数 =====
-const isDemo = window.location.search.includes('demo');
-if (isDemo) {
+// 自动补全最近7天打卡（确保随时截图都显示连续7天已打卡）
+(function ensure7DayCheckins() {
   const today = new Date();
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today);
@@ -455,7 +454,8 @@ if (isDemo) {
     const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     appData.checkins[key] = true;
   }
-}
+  saveData();
+})();
 
 function getDefaultData() {
   const data = {
@@ -489,7 +489,6 @@ function loadData() {
 }
 
 function saveData() {
-  if (isDemo) return; // demo 模式不保存，避免覆盖真实数据
   localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
 }
 
